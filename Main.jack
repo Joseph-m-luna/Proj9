@@ -1,0 +1,16 @@
+class Main {
+	function void main() {
+		var int number, i, result;
+		let i = 1;
+		let number = Keyboard.readInt("Print a number to check");
+		do Output.printString("The value inputted has the following factors");
+		while (i < (number/2)) {
+			let result = number / i;
+			do Output.printInt(result);
+			do Output.println();
+			let i = i + 1;
+		}
+		
+		return;
+	}
+}
