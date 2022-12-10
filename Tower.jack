@@ -1,0 +1,105 @@
+class Tower {
+	//array to store the tower data in
+	field Array tower;
+	field int arrsize;
+	field Array stacksize;
+	
+	//note, large numbers are closer to end, small numbers are closer to start
+	constructor Tower new (int size) {
+		var int total;
+		let arrsize = size;
+		let total = arrsize*3;
+		let tower = Array.new(total);
+		let stacksize = Array.new(3);
+		do reset();
+		return this;
+	}
+	
+	method void reset() {
+		var int i, size, j, index, self, total;
+		let i = 0;
+		let stacksize[0] = arrsize;
+		let stacksize[1] = 0;
+		let stacksize[2] = 0;
+		
+		
+		while (i < 3) {
+			let j = 0;
+			while (j < arrsize) {
+				let index = (arrsize*i) + j;
+				if (i = 0) {
+					let tower[index] = j + 1;
+				} else {
+					let tower[index] = 0;
+				}
+				let j = j + 1;
+			}
+			let i = i + 1;
+		}
+		return;
+	}
+	
+	method void move(int startstack, int endstack) {
+		//initialize
+		var int stackpos1, stackpos2, temp;
+		
+		//protect against invalid moves
+		if (stacksize[startstack] > 0) {
+			let stackpos1 = (startstack * arrsize) + (arrsize - stacksize[startstack]);
+			let stackpos2 = (endstack * arrsize) + (arrsize - stacksize[endstack] - 1);
+			if (stacksize[endstack] > 0) {
+				let temp = stackpos2 + 1;
+				if (tower[stackpos1] < tower[temp]) {
+					let stacksize[startstack] = stacksize[startstack] - 1;
+					let stacksize[endstack] = stacksize[endstack] + 1;
+					let tower[stackpos2] = tower[stackpos1];
+					let tower[stackpos1] = 0;
+				} else {
+					do Output.println();
+					do Output.printString("invalid move, cannot stack large on top of small");
+					do Output.println();
+				}
+			} else {
+				let stacksize[startstack] = stacksize[startstack] - 1;
+				let stacksize[endstack] = stacksize[endstack] + 1;
+				let tower[stackpos2] = tower[stackpos1];
+				let tower[stackpos1] = 0;
+			}
+		} else {
+			do Output.println();
+			do Output.printString("Invalid move, cannot move from empty stack");
+			do Output.println();
+		}
+		return;
+	}
+	
+	method boolean checkwin() {
+		var int laststack;
+		var boolean win;
+		let win = false;
+		let laststack = 2;
+		if (stacksize[laststack] = arrsize) {
+			let win = true;
+		}
+		return win;
+	}
+	
+	method void display() {
+		var int i2, totalSize, temp, j2, index;
+		let i2 = 0;
+		let totalSize = arrsize*arrsize;
+		let temp = 10;
+		while (i2 < arrsize) {
+			let j2 = 0;
+			while (j2 < 3) {
+				let index = (j2*arrsize) + i2;
+				let j2 = j2 + 1;
+				do Output.printInt(tower[index]);
+				do Output.printString("   ");
+			}
+			do Output.println();
+			let i2 = i2 + 1;
+		}
+		return;
+	}
+}
